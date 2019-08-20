@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { DashboardComponent } from './dashboard/dashboard.component'
 import { NavbarComponent } from './navbar/navbar.component'
 import { TasksComponent } from './tasks/tasks.component'
 
@@ -12,12 +13,24 @@ const ROUTES = RouterModule.forRoot([
   {
     path: 'tasks',
     component: TasksComponent
+  },
+  
+  {
+    path: 'dashboard',
+    component: DashboardComponent
+  },
+  
+  {
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
   }
 ])
 
 @NgModule({
   declarations: [
     AppComponent,
+    DashboardComponent,
     NavbarComponent,
     TasksComponent
   ],
