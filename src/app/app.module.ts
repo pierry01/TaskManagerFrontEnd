@@ -7,10 +7,16 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { NavbarComponent } from './navbar/navbar.component'
+import { TaskDetailComponent } from './tasks/task-detail/task-detail.component'
 import { TasksComponent } from './tasks/tasks.component'
 import { TaskService } from './tasks/shared/task.service'
 
 const ROUTES = RouterModule.forRoot([
+  {
+    path: 'tasks/:id',
+    component: TaskDetailComponent
+  },
+  
   {
     path: 'tasks',
     component: TasksComponent
@@ -33,6 +39,7 @@ const ROUTES = RouterModule.forRoot([
     AppComponent,
     DashboardComponent,
     NavbarComponent,
+    TaskDetailComponent,
     TasksComponent
   ],
   imports: [
