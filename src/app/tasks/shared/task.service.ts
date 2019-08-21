@@ -16,7 +16,7 @@ const TASKS: Array<Task> = [
 
 export class TaskService {
   constructor(private http: HttpClient){ }
-  
+
   getTasks(): Promise<Task[]>{
     let promise = new Promise((resolve, reject) => {
       if(TASKS.length > 0) {
@@ -29,7 +29,7 @@ export class TaskService {
     
     return promise
   }
-  
+
   getImportantTasks(): Promise<Task[]>{
     return Promise.resolve(TASKS.slice(0, 3))
   }
