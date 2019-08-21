@@ -30,8 +30,9 @@ export class TaskService {
     return Promise.resolve(TASKS.slice(0, 3))
   }
 
-  getTask(id: number): Promise<Task>{
-    return this.getTasks()
-      .then(tasks => tasks.find(task => task.id === id))
+  getTask(id: number): Observable<Task>{
+    let url = `${this.tasksUrl}/${id}`
+
+    return this.httpClient.get<Task>(url)
   }
 }
