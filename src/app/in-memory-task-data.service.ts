@@ -14,7 +14,7 @@ export class InMemoryTaskDataService implements InMemoryDbService{
       { id: 5, title: 'Fazer tarefa 5' },
       { id: 6, title: 'Fazer tarefa 6' }
     ]
-    
+
     return { tasks }
   }
 }
