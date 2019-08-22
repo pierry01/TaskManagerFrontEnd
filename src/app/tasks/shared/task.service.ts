@@ -49,7 +49,7 @@ export class TaskService {
         map(() => task)
       )
   }
-  
+
   updateTask(task: Task): Observable<Task>{
     let url = `${this.tasksUrl}/${task.id}`
     let headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
@@ -58,6 +58,17 @@ export class TaskService {
       .pipe(
         catchError(this.handleError),
         map(() => task)
+      )
+  }
+  
+  deleteTask(id: number): Observable<null>{
+    let url = `${this.tasksUrl}/${id}`
+    let headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
+    
+    return this.httpClient.delete<Task>(url, headers)
+      .pipe(
+        catchError(this.handleError),
+        map(() => null)
       )
   }
   
