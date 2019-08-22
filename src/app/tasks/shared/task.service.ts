@@ -39,6 +39,17 @@ export class TaskService {
       )
   }
   
+  createTask(task: Task): Observable<Task>{
+    let url = this.tasksUrl
+    let headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
+    
+    return this.httpClient.post<Task>(url, task, headers)
+      .pipe(
+        catchError(this.handleError),
+        map(() => task)
+      )
+  }
+  
   updateTask(task: Task): Observable<Task>{
     let url = `${this.tasksUrl}/${task.id}`
     let headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
