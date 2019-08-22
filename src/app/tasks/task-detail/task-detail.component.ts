@@ -14,6 +14,10 @@ import { TaskService } from '../shared/task.service'
 
 export class TaskDetailComponent implements OnInit{
   task: Task
+  taskDoneOptions: Array<any> = [
+    { value: false, text: 'Pendente' },
+    { value: true, text: 'Feita' }
+  ]
   
   constructor(
     private taskService: TaskService,
