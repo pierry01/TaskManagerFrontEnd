@@ -13,24 +13,25 @@ import { Task } from './task.model'
 
 export class TaskService {
   tasksUrl = 'api/tasks'
+  headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
   
   constructor(private httpClient: HttpClient){ }
 
-  getTasks(): Observable<Task[]>{
+  getAll(): Observable<Task[]>{
     return this.httpClient.get<Task[]>(this.tasksUrl)
       .pipe(
         catchError(this.handleError)
       )
   }
 
-  getImportantTasks(): Observable<Task[]>{
-    return this.getTasks().pipe(
+  getImportant(): Observable<Task[]>{
+    return this.getAll().pipe(
       map(tasks => tasks.slice(0, 3)),
       catchError(this.handleError)
     )
   }
 
-  getTask(id: number): Observable<Task>{
+  getById(id: number): Observable<Task>{
     let url = `${this.tasksUrl}/${id}`
 
     return this.httpClient.get<Task>(url)
@@ -39,33 +40,30 @@ export class TaskService {
       )
   }
   
-  createTask(task: Task): Observable<Task>{
+  create(task: Task): Observable<Task>{
     let url = this.tasksUrl
-    let headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
-    
-    return this.httpClient.post<Task>(url, task, headers)
+
+    return this.httpClient.post<Task>(url, task, this.headers)
       .pipe(
         catchError(this.handleError),
         map(() => task)
       )
   }
 
-  updateTask(task: Task): Observable<Task>{
+  update(task: Task): Observable<Task>{
     let url = `${this.tasksUrl}/${task.id}`
-    let headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
-    
-    return this.httpClient.put<Task>(url, task, headers)
+
+    return this.httpClient.put<Task>(url, task, this.headers)
       .pipe(
         catchError(this.handleError),
         map(() => task)
       )
   }
   
-  deleteTask(id: number): Observable<null>{
+  delete(id: number): Observable<null>{
     let url = `${this.tasksUrl}/${id}`
-    let headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
-    
-    return this.httpClient.delete<Task>(url, headers)
+
+    return this.httpClient.delete<Task>(url, this.headers)
       .pipe(
         catchError(this.handleError),
         map(() => null)
