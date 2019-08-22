@@ -10,17 +10,44 @@ import { TaskService } from './shared/task.service'
 
 export class TasksComponent implements OnInit{
   tasks: Array<Task>
-  selectedTask: Task
-  
-  constructor(private taskService: TaskService){ }
-  
+  newTask: Task
+
+  constructor(private taskService: TaskService){
+    this.newTask = new Task(null, '')
+  }
+
   ngOnInit(){
-    this.taskService.getTasks()
-      .then((tasks) => this.tasks = tasks)
-      .catch((error_msg) => console.log(error_msg))
+    this.taskService.getAll()
+      .subscribe(
+        tasks => this.tasks = tasks,
+        error => alert('Ocorreu um erro no servidor. Tente mais tarde...')
+      )
+  }
+
+  createTask(){
+    this.newTask.title = this.newTask.title.trim()
+
+    if(!this.newTask.title){
+      alert('Tarefa deve ter um título')
+    } else {
+      this.taskService.create(this.newTask)
+        .subscribe(
+          task => {
+            this.tasks.push(task)
+            this.newTask = new Task(null, '')
+          },
+          () => alert('Ocorreu um erro no servidor. Tente mais tarde...')
+        )
+    }
   }
   
-  onSelect(task: Task): void{
-    this.selectedTask = task
+  deleteTask(task: Task){
+    if(confirm(`Deseja realmente excluir a tarefa "${task.title}"?`)){
+      this.taskService.delete(task.id)
+        .subscribe(
+          () => this.tasks = this.tasks.filter(t => t !== task),
+          () => alert('Ocorreu um erro no servidor. Tente mais tarde...')
+        )
+    }
   }
 }
