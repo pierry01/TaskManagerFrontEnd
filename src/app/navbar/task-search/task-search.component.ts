@@ -5,7 +5,7 @@ import { Task } from '../../tasks/shared/task.model'
 import { TaskService } from '../../tasks/shared/task.service'
 
 import { Subject, Observable, of } from 'rxjs'
-import { switchMap } from 'rxjs/operators';
+import { switchMap, debounceTime, distinctUntilChanged } from 'rxjs/operators'
 
 @Component({
   selector: 'task-search',
@@ -15,11 +15,13 @@ import { switchMap } from 'rxjs/operators';
 export class TaskSearchComponent implements OnInit{
   searchTerms: Subject<string> = new Subject()
   tasks: Task[] = []
-  
+
   constructor(private taskService: TaskService, private router: Router) { }
-  
+
   ngOnInit(){
     this.searchTerms.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
       switchMap(
         term => term ? this.taskService.searchByTitle(term) : of<Task[]>([])
       )
@@ -29,7 +31,7 @@ export class TaskSearchComponent implements OnInit{
   search(term: string){
     this.searchTerms.next(term)
   }
-  
+
   goToTask(task: Task){
     this.tasks = []
     this.router.navigate(['/tasks', task.id])
