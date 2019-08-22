@@ -70,6 +70,15 @@ export class TaskService {
       )
   }
   
+  searchByTitle(term: string): Observable<Task[]>{
+    let url = `${this.tasksUrl}?title=${term}`
+    
+    return this.httpClient.get<Task[]>(url)
+      .pipe(
+        catchError(this.handleError),
+      )
+  }
+  
   private
   
   handleError(error: Response){
