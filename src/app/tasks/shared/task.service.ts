@@ -1,8 +1,11 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 
-import { Observable } from 'rxjs'
+// RXJS
+import { from } from 'rxjs'
+import { Observable, throwError } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { catchError, retry } from 'rxjs/operators'
 
 import { Task } from './task.model'
 
@@ -15,11 +18,15 @@ export class TaskService {
 
   getTasks(): Observable<Task[]>{
     return this.httpClient.get<Task[]>(this.tasksUrl)
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   getImportantTasks(): Observable<Task[]>{
     return this.getTasks().pipe(
-      map(tasks => tasks.slice(0, 3))
+      map(tasks => tasks.slice(0, 3)),
+      catchError(this.handleError)
     )
   }
 
@@ -27,5 +34,26 @@ export class TaskService {
     let url = `${this.tasksUrl}/${id}`
 
     return this.httpClient.get<Task>(url)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+  
+  updateTask(task: Task): Observable<Task>{
+    let url = `${this.tasksUrl}/${task.id}`
+    let headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
+    
+    return this.httpClient.put<Task>(url, task, headers)
+      .pipe(
+        catchError(this.handleError),
+        map(() => task)
+      )
+  }
+  
+  private
+  
+  handleError(error: Response){
+    console.log('Salvando o erro ->', error)
+    return Observable.throw(error)
   }
 }
