@@ -1,7 +1,7 @@
 <div style="text-align: center">
-  <h1 class="pb-2 mt-4 mb-2 border-bottom">{{ task?.title }}</h1><br>
+  <h1 class="pb-2 mt-4 mb-2 border-bottom">{{ task.title }}</h1><br>
 
-  <form #taskForm="ngForm" *ngIf="task">
+  <form #taskForm="ngForm">
     <div class="row">
       <div class="form-group col-md-6">
         <label for="title" class="form-control-label">Título</label>
@@ -54,5 +54,7 @@
 
     <button class="btn btn-info" style="margin-right: 15px" (click)="goBack()">Voltar</button>
     <button [disabled]="taskForm.invalid" class="btn btn-success" (click)="updateTask()">Atualizar</button>
+  
+    <pre>{{task | json}}</pre>
   </form>
 </div>

@@ -14,12 +14,12 @@ import { TaskService } from '../shared/task.service'
 
 export class TaskDetailComponent implements OnInit{
   task: Task
-  
+
   taskDoneOptions: Array<any> = [
     { value: false, text: 'Pendente' },
     { value: true, text: 'Feita' }
   ]
-  
+
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
@@ -27,6 +27,8 @@ export class TaskDetailComponent implements OnInit{
   ){ }
   
   ngOnInit(){
+    this.task = new Task(null, null)
+
     this.route.params.pipe(
       switchMap((params: Params) => this.taskService.getById(+params['id'])))
       .subscribe(
@@ -34,15 +36,20 @@ export class TaskDetailComponent implements OnInit{
         error => alert('Ocorreu um erro no servidor. Tente mais tarde...')
       )
   }
-  
+
   ngAfterViewInit(){
-    
+    $('#deadline').datetimepicker({
+      sideBySide: true,
+      'locale': 'pt-br'
+    }).on('dp.change', () => {
+      this.task.deadline = $('#deadline').val()
+    })
   }
-  
+
   goBack(){
     this.location.back()
   }
-  
+
   updateTask(){
     if(!this.task.title){
       alert('A tarefa deve ter um título')
