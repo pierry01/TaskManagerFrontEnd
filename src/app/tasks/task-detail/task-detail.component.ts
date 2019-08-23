@@ -51,15 +51,11 @@ export class TaskDetailComponent implements OnInit{
   }
 
   updateTask(){
-    if(!this.task.title){
-      alert('A tarefa deve ter um título')
-    } else {
-      this.taskService.update(this.task)
-        .subscribe(
-          () => alert('Tarefa atualizada com sucesso!'),
-          error => alert('Ocorreu um erro no servidor, tente mais tarde...')
-        )
-    }
+    this.taskService.update(this.task)
+      .subscribe(
+        () => alert('Tarefa atualizada com sucesso!'),
+        error => alert('Ocorreu um erro no servidor, tente mais tarde...')
+      )
   }
   
   showFieldError(field): boolean{
