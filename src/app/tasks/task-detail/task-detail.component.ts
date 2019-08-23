@@ -41,18 +41,24 @@ export class TaskDetailComponent implements OnInit{
     this.route.params.pipe(
       switchMap((params: Params) => this.taskService.getById(+params['id'])))
       .subscribe(
-        task => this.task = task,
+        task => this.setTask(task),
         error => alert('Ocorreu um erro no servidor. Tente mais tarde...')
       )
   }
 
+  setTask(task: Task): void {
+    this.task = task
+
+    this.reactiveTaskForm.patchValue(task)
+  }
+
   ngAfterViewInit(){
-    // $('#deadline').datetimepicker({
-    //   sideBySide: true,
-    //   'locale': 'pt-br'
-    // }).on('dp.change', () => {
-    //   this.task.deadline = $('#deadline').val()
-    // })
+    $('#deadline').datetimepicker({
+      sideBySide: true,
+      'locale': 'pt-br'
+    }).on('dp.change', () => {
+      this.reactiveTaskForm.get('deadline').setValue($('#deadline').val())
+    })
   }
 
   goBack(){
@@ -66,7 +72,7 @@ export class TaskDetailComponent implements OnInit{
         error => alert('Ocorreu um erro no servidor, tente mais tarde...')
       )
   }
-  
+
   showFieldError(field): boolean{
     return field.invalid && (field.touched || field.dirty)
   }
