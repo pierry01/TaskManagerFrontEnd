@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core'
 import { ActivatedRoute, Params } from '@angular/router'
 import { Location } from '@angular/common'
+import { FormGroup, FormControl } from '@angular/forms'
 
 import { switchMap } from 'rxjs/operators'
 
@@ -13,6 +14,7 @@ import { TaskService } from '../shared/task.service'
 })
 
 export class TaskDetailComponent implements OnInit{
+  reactiveTaskForm: FormGroup
   task: Task
 
   taskDoneOptions: Array<any> = [
@@ -24,8 +26,15 @@ export class TaskDetailComponent implements OnInit{
     private taskService: TaskService,
     private route: ActivatedRoute,
     private location: Location
-  ){ }
-  
+  ){ 
+    this.reactiveTaskForm = new FormGroup({
+      title: new FormControl(null),
+      deadline: new FormControl(null),
+      done: new FormControl(null),
+      description: new FormControl(null)
+    })
+  }
+
   ngOnInit(){
     this.task = new Task(null, null)
 
@@ -38,12 +47,12 @@ export class TaskDetailComponent implements OnInit{
   }
 
   ngAfterViewInit(){
-    $('#deadline').datetimepicker({
-      sideBySide: true,
-      'locale': 'pt-br'
-    }).on('dp.change', () => {
-      this.task.deadline = $('#deadline').val()
-    })
+    // $('#deadline').datetimepicker({
+    //   sideBySide: true,
+    //   'locale': 'pt-br'
+    // }).on('dp.change', () => {
+    //   this.task.deadline = $('#deadline').val()
+    // })
   }
 
   goBack(){
