@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, AfterViewInit } from '@angular/core'
 import { ActivatedRoute, Params } from '@angular/router'
 import { Location } from '@angular/common'
 
@@ -33,6 +33,10 @@ export class TaskDetailComponent implements OnInit{
         task => this.task = task,
         error => alert('Ocorreu um erro no servidor. Tente mais tarde...')
       )
+  }
+  
+  ngAfterViewInit(){
+    
   }
   
   goBack(){
