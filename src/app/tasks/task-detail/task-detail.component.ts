@@ -14,6 +14,7 @@ import { TaskService } from '../shared/task.service'
 
 export class TaskDetailComponent implements OnInit{
   task: Task
+  
   taskDoneOptions: Array<any> = [
     { value: false, text: 'Pendente' },
     { value: true, text: 'Feita' }
@@ -48,5 +49,9 @@ export class TaskDetailComponent implements OnInit{
           error => alert('Ocorreu um erro no servidor, tente mais tarde...')
         )
     }
+  }
+  
+  showFieldError(field): boolean{
+    return field.invalid && (field.touched || field.dirty)
   }
 }
