@@ -1,20 +1,20 @@
 <div style="text-align: center">
   <h1 class="pb-2 mt-4 mb-2 border-bottom">{{ task?.title }}</h1><br>
-  
+
   <form #taskForm="ngForm" *ngIf="task">
     <div class="row">
       <div class="form-group col-md-6">
         <label for="title" class="form-control-label">Título</label>
-        
+
         <input #title="ngModel" [(ngModel)]="task.title" id="title" type="text"
         class="form-control" [class.is-invalid]="showFieldError(title)"
-        [class.is-valid]="title.valid" name="title" required minlength="3"
-        maxlength="80">
-          
+        [class.is-valid]="title.valid" name="title" required minlength="5"
+        maxlength="150">
+
           <div *ngIf="showFieldError(title)" class="text-danger">
             <div *ngIf="title.errors.required">Título obrigatório</div>
-            <div *ngIf="title.errors.minlength">Título deve ter pelo menos 3 dígitos</div>
-            <div *ngIf="title.errors.maxlength">Título deve ser menor que 80 dígitos</div>
+            <div *ngIf="title.errors.minlength">Título deve ter pelo menos 5 dígitos</div>
+            <div *ngIf="title.errors.maxlength">Título deve ser menor que 150 dígitos</div>
           </div>
       </div>
 
@@ -51,7 +51,7 @@
         <textarea [(ngModel)]="task.description" id="description" type="text" class="form-control" name="description" rows="4"></textarea>
       </div>
     </div><br>
-    
+
     <button class="btn btn-info" style="margin-right: 15px" (click)="goBack()">Voltar</button>
     <button [disabled]="taskForm.invalid" class="btn btn-success" (click)="updateTask()">Atualizar</button>
   </form>
