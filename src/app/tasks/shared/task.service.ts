@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 
 import { Task } from './task.model'
@@ -14,6 +15,8 @@ const TASKS: Array<Task> = [
 @Injectable()
 
 export class TaskService {
+  constructor(private http: HttpClient){ }
+
   getTasks(): Promise<Task[]>{
     let promise = new Promise((resolve, reject) => {
       if(TASKS.length > 0) {
@@ -23,11 +26,16 @@ export class TaskService {
         reject(error_msg)
       }
     })
-    
+
     return promise
   }
-  
+
   getImportantTasks(): Promise<Task[]>{
     return Promise.resolve(TASKS.slice(0, 3))
+  }
+
+  getTask(id: number): Promise<Task>{
+    return this.getTasks()
+      .then(tasks => tasks.find(task => task.id === id))
   }
 }

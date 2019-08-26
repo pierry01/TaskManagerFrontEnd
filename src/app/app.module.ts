@@ -1,48 +1,43 @@
+// Angular imports
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { FormsModule }   from '@angular/forms'
-import { RouterModule } from '@angular/router'
+import { HttpClientModule } from '@angular/common/http'
 
-import { AppRoutingModule } from './app-routing.module'
+// Components imports
 import { AppComponent } from './app.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { NavbarComponent } from './navbar/navbar.component'
+import { TaskDetailComponent } from './tasks/task-detail/task-detail.component'
 import { TasksComponent } from './tasks/tasks.component'
+
+// Services imports
 import { TaskService } from './tasks/shared/task.service'
 
-const ROUTES = RouterModule.forRoot([
-  {
-    path: 'tasks',
-    component: TasksComponent
-  },
-  
-  {
-    path: 'dashboard',
-    component: DashboardComponent
-  },
-  
-  {
-    path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
-  }
-])
+// Modules imports
+import { AppRoutingModule } from './app-routing.module'
+
+// InMemoryWebApi
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api'
+import { InMemoryTaskDataService } from './in-memory-task-data.service'
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     NavbarComponent,
+    TaskDetailComponent,
     TasksComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
+    BrowserModule,
     FormsModule,
-    ROUTES
+    HttpClientModule,
+    InMemoryWebApiModule.forRoot(InMemoryTaskDataService)
   ],
   providers: [ TaskService ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 
 export class AppModule { }
