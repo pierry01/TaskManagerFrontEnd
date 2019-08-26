@@ -3,55 +3,65 @@
 
   <form [formGroup]="reactiveTaskForm" (ngSubmit)="updateTask()">
     <div class="row">
+      <!-- taskTitle -->
       <div class="form-group col-md-6">
         <label for="title" class="form-control-label">Título</label>
         <input formControlName="title" id="title" type="text"
-        class="form-control" [class.is-invalid]="showFieldError(reactiveTaskForm.get('title'))"
-        [class.is-valid]="reactiveTaskForm.get('title').valid" name="title">
-        
-        <div *ngIf="showFieldError(reactiveTaskForm.get('title'))" class="text-danger">
-          <div *ngIf="reactiveTaskForm.get('title').errors.required">Título obrigatório</div>
-          <div *ngIf="reactiveTaskForm.get('title').errors.minlength">Título deve ter pelo menos 5 dígitos</div>
-          <div *ngIf="reactiveTaskForm.get('title').errors.maxlength">Título deve ser menor que 150 dígitos</div>
+        class="form-control" [ngClass]="fieldClassForErrorOrSuccess('title')">
+
+        <div *ngIf="showFieldError('title')" class="text-danger">
+          <div *ngIf="getField('title').errors.required">
+            Título obrigatório
+          </div>
+          <div *ngIf="getField('title').errors.minlength">
+            Título deve ter pelo menos 5 dígitos
+          </div>
+          <div *ngIf="getField('title').errors.maxlength">
+            Título deve ser menor que 150 dígitos
+          </div>
         </div>
       </div>
 
+      <!-- taskDeadline -->
       <div class="form-group col-md-3">
         <label for="deadline" class="form-control-label">Prazo de Entrega</label>
         <input id="deadline" type="text" class="form-control" formControlName="deadline"
-        [class.is-invalid]="showFieldError(reactiveTaskForm.get('deadline'))"
-        [class.is-valid]="reactiveTaskForm.get('deadline').valid" name="deadline">
+        [ngClass]="fieldClassForErrorOrSuccess('deadline')" name="deadline">
         
-        <div *ngIf="showFieldError(reactiveTaskForm.get('deadline'))" class="text-danger">
+        <div *ngIf="showFieldError('deadline')" class="text-danger">
           Prazo obrigatório
         </div>
       </div>
 
+      <!-- taskDone -->
       <div class="form-group col-md-3">
         <label for="done" class="form-control-label">Situação</label>
         <select id="done" class="form-control" formControlName="done" 
-        [class.is-invalid]="showFieldError(reactiveTaskForm.get('done'))"
-        [class.is-valid]="reactiveTaskForm.get('done').valid">
-          <option *ngFor="let option of taskDoneOptions" [value]="option.value">{{ option.text }}</option>
+        [ngClass]="fieldClassForErrorOrSuccess('done')">
+          <option *ngFor="let option of taskDoneOptions" [value]="option.value">
+            {{ option.text }}
+          </option>
         </select>
         
-        <div *ngIf="showFieldError(reactiveTaskForm.get('done'))" class="text-danger">
+        <div *ngIf="showFieldError('done')" class="text-danger">
           Situação obrigatória
         </div>
       </div>
     </div>
 
+    <!-- taskDescription -->
     <div class="row">
       <div class="form-group col-md-12">
         <label for="description" class="form-control-label">Descrição</label>
         <textarea formControlName="description" id="description" rows="4" class="form-control"></textarea>
       </div>
     </div>
-    
-    <button type="submit" [disabled]="reactiveTaskForm.invalid" style="margin-right: 15px" class="btn btn-success">Atualizar</button>
-    <button class="btn btn-info" type="button" (click)="goBack()">Voltar</button>
 
-    <pre>{{ reactiveTaskForm.value | json }}</pre>
+    <!-- taskButons -->
+    <button type="submit" [disabled]="reactiveTaskForm.invalid"
+    style="margin-right: 15px" class="btn btn-success">Atualizar</button>
+    
+    <button class="btn btn-info" type="button" (click)="goBack()">Voltar</button>
   </form>
 
   <!--<form #taskForm="ngForm" (ngSubmit)="updateTask()">-->

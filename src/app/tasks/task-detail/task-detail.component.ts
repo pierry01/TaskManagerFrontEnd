@@ -16,18 +16,20 @@ import { TaskService } from '../shared/task.service'
 export class TaskDetailComponent implements OnInit{
   reactiveTaskForm: FormGroup
   task: Task
+  taskDoneOptions: Array<any>
 
-  taskDoneOptions: Array<any> = [
-    { value: false, text: 'Pendente' },
-    { value: true, text: 'Feita' }
-  ]
 
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
     private location: Location,
     private formBuilder: FormBuilder
-  ){ 
+  ){
+    this.taskDoneOptions = [
+      { value: false, text: 'Pendente' },
+      { value: true, text: 'Feita' }
+    ]
+
     this.reactiveTaskForm = this.formBuilder.group({
       title: [null, [Validators.required, Validators.minLength(5), Validators.maxLength(150)]],
       deadline: [null, Validators.required],
@@ -35,6 +37,7 @@ export class TaskDetailComponent implements OnInit{
       description: [null]
     })
   }
+
 
   ngOnInit(){
     this.task = new Task(null, null)
@@ -47,11 +50,12 @@ export class TaskDetailComponent implements OnInit{
       )
   }
 
+
   setTask(task: Task): void {
     this.task = task
-
     this.reactiveTaskForm.patchValue(task)
   }
+
 
   ngAfterViewInit(){
     $('#deadline').datetimepicker({
@@ -66,6 +70,7 @@ export class TaskDetailComponent implements OnInit{
     this.location.back()
   }
 
+
   updateTask(){
     this.task.title = this.reactiveTaskForm.get('title').value
     this.task.deadline = this.reactiveTaskForm.get('deadline').value
@@ -79,7 +84,20 @@ export class TaskDetailComponent implements OnInit{
       )
   }
 
-  showFieldError(field): boolean{
-    return field.invalid && (field.touched || field.dirty)
+  // Form ERRORS METHODS
+  fieldClassForErrorOrSuccess(fieldName: string){
+    return {
+      'is-invalid': this.showFieldError(fieldName),
+      'is-valid': this.getField(fieldName).valid
+    }
+  }
+
+  showFieldError(fieldName: string): boolean{
+    let field = this.getField(fieldName)
+    return field.invalid && ( field.touched || field.dirty )
+  }
+
+  getField(fieldName: string){
+    return this.reactiveTaskForm.get(fieldName)
   }
 }
