@@ -7,17 +7,17 @@
       <div class="col-sm-9">
         <input type="text" class="form-control" id="name" formControlName="name"
         [ngClass]="formUtils.fieldClassForErrorOrSuccess('name')">
-      </div>
 
-      <div *ngIf="formUtils.showFieldError('name')" class="text-danger">
-        <div *ngIf="form.get('name').errors.required">
-          Nome obrigatório
-        </div>
-        <div *ngIf="form.get('name').errors.minlength">
-          Nome deve ter pelo menos 5 dígitos
-        </div>
-        <div *ngIf="form.get('name').errors.maxlength">
-          Nome deve ser menor que 100 dígitos
+        <div *ngIf="formUtils.showFieldError('name')" class="text-danger">
+          <div *ngIf="form.get('name').errors.required">
+            Nome obrigatório
+          </div>
+          <div *ngIf="form.get('name').errors.minlength">
+            Nome deve ter pelo menos 5 dígitos
+          </div>
+          <div *ngIf="form.get('name').errors.maxlength">
+            Nome deve ser menor que 100 dígitos
+          </div>
         </div>
       </div>
     </div>
@@ -28,14 +28,14 @@
       <div class="col-sm-9">
         <input type="email" class="form-control" id="email" formControlName="email"
         [ngClass]="formUtils.fieldClassForErrorOrSuccess('email')">
-      </div>
 
-      <div *ngIf="formUtils.showFieldError('email')" class="text-danger">
-        <div *ngIf="form.get('email').errors.required">
-          E-mail obrigatório
-        </div>
-        <div *ngIf="form.get('email').errors.email">
-          E-mail inválido
+        <div *ngIf="formUtils.showFieldError('email')" class="text-danger">
+          <div *ngIf="form.get('email').errors.required">
+            E-mail obrigatório
+          </div>
+          <div *ngIf="form.get('email').errors.email">
+            E-mail inválido
+          </div>
         </div>
       </div>
     </div>
@@ -46,14 +46,14 @@
       <div class="col-sm-9">
         <input type="password" class="form-control" id="password" formControlName="password"
         [ngClass]="formUtils.fieldClassForErrorOrSuccess('password')">
-      </div>
 
-      <div *ngIf="formUtils.showFieldError('password')" class="text-danger">
-        <div *ngIf="form.get('password').errors.required">
-          Senha obrigatória
-        </div>
-        <div *ngIf="form.get('password').errors.minlength">
-          Senha deve ter pelo menos 6 dígitos
+        <div *ngIf="formUtils.showFieldError('password')" class="text-danger">
+          <div *ngIf="form.get('password').errors.required">
+            Senha obrigatória
+          </div>
+          <div *ngIf="form.get('password').errors.minlength">
+            Senha deve ter pelo menos 6 dígitos
+          </div>
         </div>
       </div>
     </div>
@@ -64,11 +64,14 @@
       <div class="col-sm-9">
         <input class="form-control" id="passwordConfirmation" formControlName="passwordConfirmation" 
         [ngClass]="formUtils.fieldClassForErrorOrSuccess('passwordConfirmation')" type="password">
-      </div>
 
-      <div *ngIf="formUtils.showFieldError('passwordConfirmation')" class="text-danger">
-        <div *ngIf="form.get('passwordConfirmation').errors.required">
-          Confirmação de senha obrigatória
+        <div *ngIf="formUtils.showFieldError('passwordConfirmation')" class="text-danger">
+          <div *ngIf="form.get('passwordConfirmation').errors.required">
+            Confirmação de senha obrigatória
+          </div>
+          <div *ngIf="form.get('passwordConfirmation').errors.mismatch">
+            Confirmação de senha inválida
+          </div>
         </div>
       </div>
     </div>
