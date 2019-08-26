@@ -18,6 +18,7 @@ import { TaskSearchComponent } from './navbar/task-search/task-search.component'
 import { TasksComponent } from './tasks/tasks.component'
 
 // Services imports
+import { AuthService } from './shared/auth.service'
 import { TaskService } from './tasks/shared/task.service'
 
 // Modules imports
@@ -51,6 +52,7 @@ import * as $ from 'jquery'
   ],
   providers: [
     Angular2TokenService,
+    AuthService,
     TaskService
   ],
   bootstrap: [ AppComponent ]
