@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
 
+// Angular Plugins
+import { Angular2TokenService } from 'angular2-token'
+
 // Components imports
 import { AppComponent } from './app.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
@@ -46,7 +49,10 @@ import * as $ from 'jquery'
     InMemoryWebApiModule.forRoot(InMemoryTaskDataService),
     ReactiveFormsModule
   ],
-  providers: [ TaskService ],
+  providers: [
+    Angular2TokenService,
+    TaskService
+  ],
   bootstrap: [ AppComponent ]
 })
 
