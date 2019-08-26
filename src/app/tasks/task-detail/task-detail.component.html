@@ -1,7 +1,7 @@
 <div style="text-align: center">
   <h1 class="pb-2 mt-4 mb-2 border-bottom">{{ task.title }}</h1><br>
 
-  <form [formGroup]="reactiveTaskForm">
+  <form [formGroup]="reactiveTaskForm" (ngSubmit)="updateTask()">
     <div class="row">
       <div class="form-group col-md-6">
         <label for="title" class="form-control-label">Título</label>
@@ -47,6 +47,9 @@
         <textarea formControlName="description" id="description" rows="4" class="form-control"></textarea>
       </div>
     </div>
+    
+    <button type="submit" [disabled]="reactiveTaskForm.invalid" style="margin-right: 15px" class="btn btn-success">Atualizar</button>
+    <button class="btn btn-info" type="button" (click)="goBack()">Voltar</button>
 
     <pre>{{ reactiveTaskForm.value | json }}</pre>
   </form>
