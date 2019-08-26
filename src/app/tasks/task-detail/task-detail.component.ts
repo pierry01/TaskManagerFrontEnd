@@ -5,6 +5,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 
 import { switchMap } from 'rxjs/operators'
 
+import { FormUtils } from '../../shared/form.utils'
 import { Task } from '../shared/task.model'
 import { TaskService } from '../shared/task.service'
 
@@ -14,9 +15,10 @@ import { TaskService } from '../shared/task.service'
 })
 
 export class TaskDetailComponent implements OnInit{
-  reactiveTaskForm: FormGroup
+  form: FormGroup
   task: Task
   taskDoneOptions: Array<any>
+  formUtils: FormUtils
 
 
   constructor(
@@ -30,12 +32,14 @@ export class TaskDetailComponent implements OnInit{
       { value: true, text: 'Feita' }
     ]
 
-    this.reactiveTaskForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: [null, [Validators.required, Validators.minLength(5), Validators.maxLength(150)]],
       deadline: [null, Validators.required],
       done: [null, Validators.required],
       description: [null]
     })
+
+    this.formUtils = new FormUtils(this.form)
   }
 
 
@@ -53,7 +57,7 @@ export class TaskDetailComponent implements OnInit{
 
   setTask(task: Task): void {
     this.task = task
-    this.reactiveTaskForm.patchValue(task)
+    this.form.patchValue(task)
   }
 
 
@@ -62,7 +66,7 @@ export class TaskDetailComponent implements OnInit{
       sideBySide: true,
       'locale': 'pt-br'
     }).on('dp.change', () => {
-      this.reactiveTaskForm.get('deadline').setValue($('#deadline').val())
+      this.form.get('deadline').setValue($('#deadline').val())
     })
   }
 
@@ -72,32 +76,15 @@ export class TaskDetailComponent implements OnInit{
 
 
   updateTask(){
-    this.task.title = this.reactiveTaskForm.get('title').value
-    this.task.deadline = this.reactiveTaskForm.get('deadline').value
-    this.task.done = this.reactiveTaskForm.get('done').value
-    this.task.description = this.reactiveTaskForm.get('description').value
+    this.task.title = this.form.get('title').value
+    this.task.deadline = this.form.get('deadline').value
+    this.task.done = this.form.get('done').value
+    this.task.description = this.form.get('description').value
 
     this.taskService.update(this.task)
       .subscribe(
         () => alert('Tarefa atualizada com sucesso!'),
         error => alert('Ocorreu um erro no servidor, tente mais tarde...')
       )
-  }
-
-  // Form ERRORS METHODS
-  fieldClassForErrorOrSuccess(fieldName: string){
-    return {
-      'is-invalid': this.showFieldError(fieldName),
-      'is-valid': this.getField(fieldName).valid
-    }
-  }
-
-  showFieldError(fieldName: string): boolean{
-    let field = this.getField(fieldName)
-    return field.invalid && ( field.touched || field.dirty )
-  }
-
-  getField(fieldName: string){
-    return this.reactiveTaskForm.get(fieldName)
   }
 }

@@ -12,7 +12,7 @@ import { Task } from './task.model'
 @Injectable()
 
 export class TaskService {
-  tasksUrl = 'api/tasks'
+  tasksUrl = 'http://api.taskmanager.dev:3000/tasks'
   headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
   
   constructor(private httpClient: HttpClient){ }
@@ -20,14 +20,14 @@ export class TaskService {
   getAll(): Observable<Task[]>{
     return this.httpClient.get<Task[]>(this.tasksUrl)
       .pipe(
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       )
   }
 
   getImportant(): Observable<Task[]>{
     return this.getAll().pipe(
       map(tasks => tasks.slice(0, 3)),
-      catchError(this.handleError)
+      catchError(this.handleErrors)
     )
   }
 
@@ -36,7 +36,7 @@ export class TaskService {
 
     return this.httpClient.get<Task>(url)
       .pipe(
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       )
   }
   
@@ -45,7 +45,7 @@ export class TaskService {
 
     return this.httpClient.post<Task>(url, task, this.headers)
       .pipe(
-        catchError(this.handleError),
+        catchError(this.handleErrors),
         map(() => task)
       )
   }
@@ -55,7 +55,7 @@ export class TaskService {
 
     return this.httpClient.put<Task>(url, task, this.headers)
       .pipe(
-        catchError(this.handleError),
+        catchError(this.handleErrors),
         map(() => task)
       )
   }
@@ -65,7 +65,7 @@ export class TaskService {
 
     return this.httpClient.delete<Task>(url, this.headers)
       .pipe(
-        catchError(this.handleError),
+        catchError(this.handleErrors),
         map(() => null)
       )
   }
@@ -75,13 +75,13 @@ export class TaskService {
     
     return this.httpClient.get<Task[]>(url)
       .pipe(
-        catchError(this.handleError),
+        catchError(this.handleErrors),
       )
   }
   
   private
   
-  handleError(error: Response){
+  handleErrors(error: Response){
     console.log('Salvando o erro ->', error)
     return Observable.throw(error)
   }
