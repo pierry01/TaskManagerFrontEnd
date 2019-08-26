@@ -1,41 +1,88 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 
-import { Task } from './task.model'
+// RXJS
+import { from } from 'rxjs'
+import { Observable, throwError } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { catchError, retry } from 'rxjs/operators'
 
-const TASKS: Array<Task> = [
-  { id: 1, title: 'Fazer tarefa 1' },
-  { id: 2, title: 'Fazer tarefa 2' },
-  { id: 3, title: 'Fazer tarefa 3' },
-  { id: 4, title: 'Fazer tarefa 4' },
-  { id: 5, title: 'Fazer tarefa 5' },
-  { id: 6, title: 'Fazer tarefa 6' }
-]
+import { Task } from './task.model'
 
 @Injectable()
 
 export class TaskService {
-  constructor(private http: HttpClient){ }
+  tasksUrl = 'api/tasks'
+  headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
+  
+  constructor(private httpClient: HttpClient){ }
 
-  getTasks(): Promise<Task[]>{
-    let promise = new Promise((resolve, reject) => {
-      if(TASKS.length > 0) {
-        resolve(TASKS)
-      } else {
-        let error_msg = 'Não há tarefas'
-        reject(error_msg)
-      }
-    })
-
-    return promise
+  getAll(): Observable<Task[]>{
+    return this.httpClient.get<Task[]>(this.tasksUrl)
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
-  getImportantTasks(): Promise<Task[]>{
-    return Promise.resolve(TASKS.slice(0, 3))
+  getImportant(): Observable<Task[]>{
+    return this.getAll().pipe(
+      map(tasks => tasks.slice(0, 3)),
+      catchError(this.handleError)
+    )
   }
 
-  getTask(id: number): Promise<Task>{
-    return this.getTasks()
-      .then(tasks => tasks.find(task => task.id === id))
+  getById(id: number): Observable<Task>{
+    let url = `${this.tasksUrl}/${id}`
+
+    return this.httpClient.get<Task>(url)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+  
+  create(task: Task): Observable<Task>{
+    let url = this.tasksUrl
+
+    return this.httpClient.post<Task>(url, task, this.headers)
+      .pipe(
+        catchError(this.handleError),
+        map(() => task)
+      )
+  }
+
+  update(task: Task): Observable<Task>{
+    let url = `${this.tasksUrl}/${task.id}`
+
+    return this.httpClient.put<Task>(url, task, this.headers)
+      .pipe(
+        catchError(this.handleError),
+        map(() => task)
+      )
+  }
+  
+  delete(id: number): Observable<null>{
+    let url = `${this.tasksUrl}/${id}`
+
+    return this.httpClient.delete<Task>(url, this.headers)
+      .pipe(
+        catchError(this.handleError),
+        map(() => null)
+      )
+  }
+  
+  searchByTitle(term: string): Observable<Task[]>{
+    let url = `${this.tasksUrl}?title=${term}`
+    
+    return this.httpClient.get<Task[]>(url)
+      .pipe(
+        catchError(this.handleError),
+      )
+  }
+  
+  private
+  
+  handleError(error: Response){
+    console.log('Salvando o erro ->', error)
+    return Observable.throw(error)
   }
 }

@@ -1,5 +1,21 @@
 <h1 class="page-header">Lista de Tarefas</h1>
 
+<div class="card card-body bg-light">
+  <form (ngSubmit)="createTask()">
+    <div class="row">
+      <div class="col-md-10">
+        <input name="title" type="text" class="form-control" [(ngModel)]="newTask.title" placeholder="Nova tarefa...">
+      </div>
+  
+      <div class="col-md-2">
+        <button class="btn btn-success" type="submit">
+          Adicionar Tarefa
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
 <table class="table">
   <thead>
     <tr>
@@ -14,11 +30,11 @@
       <td>{{task.id}}</td>
       <td>{{task.title}}</td>
       <td>
-        <a [routerLink]="['/tasks', task.id]" class="btn btn-info">
+        <a [routerLink]="['/tasks', task.id]" class="btn btn-info" style="margin-right: 8px">
           <i class="fa fa-info" aria-hidden="true"></i> Detalhes
         </a>
         
-        <button class="btn btn-danger">
+        <button class="btn btn-danger" (click)="deleteTask(task)">
           <i class="fa fa-trash" aria-hidden="true"></i> Excluir
         </button>
       </td>
