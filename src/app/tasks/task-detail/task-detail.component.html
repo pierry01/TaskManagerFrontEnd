@@ -5,19 +5,39 @@
     <div class="row">
       <div class="form-group col-md-6">
         <label for="title" class="form-control-label">Título</label>
-        <input type="text" formControlName="title" id="title" class="form-control">
+        <input formControlName="title" id="title" type="text"
+        class="form-control" [class.is-invalid]="showFieldError(reactiveTaskForm.get('title'))"
+        [class.is-valid]="reactiveTaskForm.get('title').valid" name="title">
+        
+        <div *ngIf="showFieldError(reactiveTaskForm.get('title'))" class="text-danger">
+          <div *ngIf="reactiveTaskForm.get('title').errors.required">Título obrigatório</div>
+          <div *ngIf="reactiveTaskForm.get('title').errors.minlength">Título deve ter pelo menos 5 dígitos</div>
+          <div *ngIf="reactiveTaskForm.get('title').errors.maxlength">Título deve ser menor que 150 dígitos</div>
+        </div>
       </div>
 
       <div class="form-group col-md-3">
         <label for="deadline" class="form-control-label">Prazo de Entrega</label>
-        <input type="text" formControlName="deadline" id="deadline" class="form-control">
+        <input id="deadline" type="text" class="form-control" formControlName="deadline"
+        [class.is-invalid]="showFieldError(reactiveTaskForm.get('deadline'))"
+        [class.is-valid]="reactiveTaskForm.get('deadline').valid" name="deadline">
+        
+        <div *ngIf="showFieldError(reactiveTaskForm.get('deadline'))" class="text-danger">
+          Prazo obrigatório
+        </div>
       </div>
 
       <div class="form-group col-md-3">
         <label for="done" class="form-control-label">Situação</label>
-        <select id="done" class="form-control" formControlName="done">
+        <select id="done" class="form-control" formControlName="done" 
+        [class.is-invalid]="showFieldError(reactiveTaskForm.get('done'))"
+        [class.is-valid]="reactiveTaskForm.get('done').valid">
           <option *ngFor="let option of taskDoneOptions" [value]="option.value">{{ option.text }}</option>
         </select>
+        
+        <div *ngIf="showFieldError(reactiveTaskForm.get('done'))" class="text-danger">
+          Situação obrigatória
+        </div>
       </div>
     </div>
 
@@ -39,7 +59,7 @@
   <!--      <input #title="ngModel" [(ngModel)]="task.title" id="title" type="text"-->
   <!--      class="form-control" [class.is-invalid]="showFieldError(title)"-->
   <!--      [class.is-valid]="title.valid" name="title" required minlength="5"-->
-  <!--      maxlength="150" name="title">-->
+  <!--      maxlength="150">-->
 
   <!--      <div *ngIf="showFieldError(title)" class="text-danger">-->
   <!--        <div *ngIf="title.errors.required">Título obrigatório</div>-->
