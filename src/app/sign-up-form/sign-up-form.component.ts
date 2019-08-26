@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 @Component({
   selector: 'sign-up-form',
-  templateUrl: './sign-up-form.component.html'
+  templateUrl: './sign-up-form-component.html'
 })
 
 export class SignUpFormComponent{
