@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
 
 // Angular Plugins
-import { Angular2TokenService } from 'angular2-token'
+import { Angular2TokenService, A2tUiModule } from 'angular2-token'
 
 // Components imports
 import { AppComponent } from './app.component'
@@ -24,15 +24,12 @@ import { TaskService } from './tasks/shared/task.service'
 // Modules imports
 import { AppRoutingModule } from './app-routing.module'
 
-// InMemoryWebApi
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api'
-import { InMemoryTaskDataService } from './in-memory-task-data.service'
-
 // JQuery plugins
 import * as $ from 'jquery'
 
 @NgModule({
   declarations: [
+    A2tUiModule,
     AppComponent,
     DashboardComponent,
     NavbarComponent,
@@ -47,7 +44,6 @@ import * as $ from 'jquery'
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(InMemoryTaskDataService),
     ReactiveFormsModule
   ],
   providers: [

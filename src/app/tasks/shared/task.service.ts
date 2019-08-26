@@ -12,7 +12,7 @@ import { Task } from './task.model'
 @Injectable()
 
 export class TaskService {
-  tasksUrl = 'api/tasks'
+  tasksUrl = 'http://api.taskmanager.dev:3000/tasks'
   headers = { headers: new HttpHeaders({'Content-Type': 'application/json'}) }
   
   constructor(private httpClient: HttpClient){ }
